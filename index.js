@@ -1,96 +1,84 @@
 // 1.You are building a feature rollout system for a startup where a FeatureToggle constructor function has properties: featureName (string), isEnabled (boolean), and userGroupAccess (array of strings like "betaTesters", "admins"), and you must use a prototype method canAccess(userRole) to return true or false, a method toggleFeature(flag) to enable or disable the feature, and simulate access attempts using if-else and switch statements for different roles.
 
-function FeatureToggle(featureName, isEnabled, userGroupAccess) {
-    this.featureName = featureName;
-    this.isEnabled = isEnabled;
-    this.userGroupAccess = userGroupAccess;
+function FeatureToggle(featureName,isEnable,userGroupAccess){
+    this.featureName=featureName;
+    this.isEnable=isEnable;
+    this.userGroupAccess=userGroupAccess;
 }
-
-FeatureToggle.prototype.canAccess = function (userRole) {
-    if (this.isEnabled == false) {
+FeatureToggle.prototype.canAccess=function(userRole){
+    if(!this.isEnable){
         return false;
     }
-    if (this.userGroupAccess.length === 0) {
-        return true;
-    }
-    return this.userGroupAccess.includes(userRole);
+
+if(this.userGroupAccess.length===0){
+    return true;
+}
+return this.userGroupAccess.includes(userRole);
+}
+
+FeatureToggle.prototype.toggleFeature=function(flag){
+    this.isEnable=flag;
 };
+const newFeature=new FeatureToggle("NewDashboard",false,["beta Testers","admins"]);
 
-FeatureToggle.prototype.toggleFeature = function (flag) {
-    this.isEnabled = flag;
-};
+const user1Role="regularUser";
+const user2Role="betaTesters";
+const user3Role="admins";
 
-const newFeature = new FeatureToggle("NewDashboard", false, ["betaTesters", "admins"]);
-const userOneRole = "regularUser";
-const userTwoRole = "betaTesters";
-const userThreeRole = "admins";
+console.log(`Feature:${newFeature.featureName},Enabled:${newFeature.isEnable} `);
+// using if else stetement
 
-console.log(`Feature: ${newFeature.featureName}, Enabled: ${newFeature.isEnabled}`);
-if (newFeature.canAccess(userOneRole)) {
-    console.log(`${userOneRole} can access ${newFeature.featureName}`);
-} else {
-    console.log(`${userOneRole} cannot access ${newFeature.featureName}`);
+if(newFeature.canAccess(user1Role)){
+    console.log(`${user1Role} can access ${newFeature.featureName}`);
 }
-
-if (newFeature.canAccess(userTwoRole)) {
-    console.log(`${userTwoRole} can access ${newFeature.featureName}`);
-} else {
-    console.log(`${userTwoRole} cannot access ${newFeature.featureName}`);
+else{
+    console.log(`${user1Role} can't access ${newFeature.featureName}`);
 }
-newFeature.toggleFeature(true);
-console.log(`Feature: ${newFeature.featureName}, Enabled: ${newFeature.isEnabled}`);
-if (newFeature.canAccess(userOneRole)) {
-    console.log(`${userOneRole} can access ${newFeature.featureName}`);
-} else {
-    console.log(`${userOneRole} cannot access ${newFeature.featureName}`);
-}
+// Using switch statements
 
-if (newFeature.canAccess(userTwoRole)) {
-    console.log(`${userTwoRole} can access ${newFeature.featureName}`);
-} else {
-    console.log(`${userTwoRole} cannot access ${newFeature.featureName}`);
-}
-
-// Add a switch statement example for handling different feature access scenarios based on user role
-function checkAccess(feature, userRole) {
-    switch (userRole) {
-        case "regularUser":
-            if (feature.canAccess(userRole)) {
+function checkAccess(feature,userRole){
+    switch(userRole){
+        case "regularAccess":
+            if(feature.canAccess(userRole)){
                 console.log("Regular user can access the feature.");
-            } else {
-                console.log("Regular user cannot access the feature.");
+            }
+            else{
+                console.log("Regular user can't access the feature");
             }
             break;
         case "betaTesters":
-            if (feature.canAccess(userRole)) {
+            if(feature.canAccess(userRole)){
                 console.log("Beta tester can access the feature.");
-            } else {
-                console.log("Beta tester cannot access the feature.");
+            }
+            else{
+                console.log("Beta tester can't access the feature");
             }
             break;
-        case "admins":
-            if (feature.canAccess(userRole)) {
+        case "admin":
+            if(feature.canAccess(userRole)){
                 console.log("Admin can access the feature.");
-            } else {
-                console.log("Admin cannot access the feature.");
+            }
+            else{
+                console.log("Admin can't access the feature.");
             }
             break;
         default:
-            console.log("Unknown user role. Access denied.");
+            console.log("Unknown user role. access denied.");
     }
-}
 
-checkAccess(newFeature, userOneRole);
-checkAccess(newFeature, userTwoRole);
-checkAccess(newFeature, userThreeRole);
-const publicFeature = new FeatureToggle("PublicFeature", true, []);
-console.log(`Feature: ${publicFeature.featureName}, Enabled: ${publicFeature.isEnabled}`);
-if (publicFeature.canAccess(userOneRole)) {
-    console.log(`${userOneRole} can access ${publicFeature.featureName}`);
-} else {
-    console.log(`${userOneRole} cannot access ${publicFeature.featureName}`);
 }
+checkAccess(newFeature,user1Role);
+checkAccess(newFeature,user2Role);
+checkAccess(newFeature,user3Role);
 
+const publicFeature=new FeatureToggle("PublicFeature",true,[]);
+console.log(`Feature: ${publicFeature.featureName},Enabled:${publicFeature.isEnable}`);
+if(publicFeature.canAccess(user1Role)){
+    console.log(`${user1Role} can access ${publicFeature.featureName}`);
+}
+else{
+    console.log(`${user1Role} can't access ${publicFeature.featureName}`);
+};
 // 2.In a freelancer time-tracking platform, create a TimeLog constructor function with properties: freelancerName (string), projectDetails (object with name and hourlyRate), and logs (array of objects with date, hoursWorked), then add prototype methods to calculate total earnings, filter logs by date range, and determine if weekly hours exceed 40 using if-else logic.
 function TimeLog(freelancerName, projectDetails, logs) {
     this.freelancerName = freelancerName;
@@ -301,8 +289,8 @@ class Employee {
         }
     }
 }
-const employee1 = new Employee(1, "Alice Johnson", { communication: 95, efficiency: 88, reliability: 92 }, ["Great communicator"]);
-const employee2 = new Employee(2, "Bob Smith", { communication: 75, efficiency: 65, reliability: 70 });
+const employee1 = new Employee(1, "Alice ", { communication: 95, efficiency: 88, reliability: 92 }, ["Great communicator"]);
+const employee2 = new Employee(2, "Aman", { communication: 75, efficiency: 65, reliability: 70 });
 console.log(`${employee1.name} Average Score:`, employee1.calculateAverageScore());
 console.log(`${employee1.name} Performance Level:`, employee1.classifyPerformanceLevel());
 console.log(`${employee1.name} Feedback:`, employee1.feedback);
@@ -350,20 +338,20 @@ class Course {
         }
     }
 }
-const instructor1 = { name: "Dr. Jane Smith", expertise: "Data Science" };
-const instructor2 = { name: "Prof. David Lee", expertise: "Web Development" };
+const instructor1 = { name: "Dr. Hagoes", expertise: "Data Science" };
+const instructor2 = { name: "Prof. Amanuel", expertise: "Web Development" };
 const students1 = [
-    { name: "Alice", completionStatus: true, expertise: "Data Science" },
-    { name: "Bob", completionStatus: false, expertise: "Web Development" },
-    { name: "Charlie", completionStatus: true, expertise: "Data Science" },
-    { name: "David", completionStatus: true, expertise: "Web Development" },
-    { name: "Eve", completionStatus: false, expertise: "Data Science" }
+    { name: "Aman", completionStatus: true, expertise: "Data Science" },
+    { name: "Lemlem", completionStatus: false, expertise: "Web Development" },
+    { name: "Aynalem", completionStatus: true, expertise: "Data Science" },
+    { name: "Abrhham", completionStatus: true, expertise: "Web Development" },
+    { name: "Hewan", completionStatus: false, expertise: "Data Science" }
 ];
 const students2 = [
-    { name: "Frank", completionStatus: true, expertise: "Web Development" },
+    { name: "Haben", completionStatus: true, expertise: "Web Development" },
     { name: "Grace", completionStatus: false, expertise: "Web Development" },
-    { name: "Heidi", completionStatus: true, expertise: "Web Development" },
-    { name: "Ivan", completionStatus: false, expertise: "Data Science" },
+    { name: "Hellen", completionStatus: true, expertise: "Web Development" },
+    { name: "Alice", completionStatus: false, expertise: "Data Science" },
     { name: "Judy", completionStatus: true, expertise: "Web Development" },
     { name: "Kelly", completionStatus: false, expertise: "Data Science" }
 ];
